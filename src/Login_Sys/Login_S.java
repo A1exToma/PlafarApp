@@ -7,6 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import frontendmyApp.frontendApp;
+
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -84,7 +87,9 @@ public class Login_S {
 					//s au introdus corect datele de login
 					//se deschide aplicatia
 					
+					frame.setVisible(false);
 					
+					frontendApp.main(null);
 				}
 				else
 				{
