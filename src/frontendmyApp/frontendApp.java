@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 public class frontendApp {
 
@@ -109,6 +110,16 @@ public class frontendApp {
 		}
 		
 		
+		DefaultTableModel tableModel = new DefaultTableModel(listaProduses,columnNames) {//make cells nonEditable
+
+			private static final long serialVersionUID = 1L;
+
+			public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
+		};
+		
+		
 		JScrollPane scrollPane=new JScrollPane();
 		table = new JTable(listaProduses,columnNames);
 		table.setRowHeight(35);
@@ -120,9 +131,12 @@ public class frontendApp {
 		table.getColumnModel().getColumn(1).setPreferredWidth(117);
 		table.getColumnModel().getColumn(2).setPreferredWidth(37);
 		table.setBackground(Color.CYAN);
+		table.setModel(tableModel);//nonEditable cells
+		
 		scrollPane.add(table);
 		scrollPane.setViewportView(table);
 		scrollPane.setBounds(0, 65, 506, 496);
+		
 		backGRDPanel.add(scrollPane);
 	}
 }
