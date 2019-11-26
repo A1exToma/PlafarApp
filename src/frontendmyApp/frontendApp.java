@@ -11,13 +11,15 @@ import java.util.Scanner;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -31,6 +33,11 @@ public class frontendApp {
 	private JButton btnCumparare;
 	private JLabel lblProduse;
 	private JLabel lblCantitate;
+	private JButton button;
+	private JTextField pretFieldupdate;
+	private JTextField cantitateFieldupdate;
+	private JTextField denumireFieldupdate;
+	private JTextField cantitateField;
 
 	
 	public static void main(String[] args) {
@@ -54,7 +61,7 @@ public class frontendApp {
 		frame = new JFrame("Plafar");
 		
 		//              x  y  dim   
-		frame.setBounds(0, 0, 800, 600);
+		frame.setBounds(300, 50, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -68,6 +75,7 @@ public class frontendApp {
 		topPanel.setBackground(Color.LIGHT_GRAY);
 		topPanel.setBounds(0, 0, 506, 66);
 		backGRDPanel.add(topPanel);
+		topPanel.setLayout(null);
 		
 		rightPanelCart = new JPanel();
 		rightPanelCart.setForeground(Color.WHITE);
@@ -87,34 +95,82 @@ public class frontendApp {
 		cartList.setForeground(Color.BLACK);
 		cartList.setBackground(Color.LIGHT_GRAY);
 		cartList.setFont(new Font("Calibri", Font.BOLD, 18));
-		cartList.setBounds(20, 198, 144, 34);
+		cartList.setBounds(20, 365, 185, 34);
 		rightPanelCart.add(cartList);
 		
 		JLabel lblCos = new JLabel("      Cos");
 		lblCos.setForeground(Color.LIGHT_GRAY);
 		lblCos.setBackground(Color.CYAN);
 		lblCos.setFont(new Font("Arial Black", Font.PLAIN, 16));
-		lblCos.setBounds(84, 87, 90, 34);
+		lblCos.setBounds(61, 278, 90, 34);
 		rightPanelCart.add(lblCos);
-		
-		
-		Integer[] comboBoxValue= {0,1,2,3,4,5,6,7,8,9,10};//value from ComboBox
-		JComboBox comboBoxCartPiece = new JComboBox(comboBoxValue);
-		comboBoxCartPiece.setBackground(Color.CYAN);
-		comboBoxCartPiece.setBounds(163, 198, 51, 34);
-		rightPanelCart.add(comboBoxCartPiece);
 		
 		lblProduse = new JLabel("Produs");
 		lblProduse.setForeground(Color.LIGHT_GRAY);
 		lblProduse.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblProduse.setBounds(20, 173, 65, 14);
+		lblProduse.setBounds(20, 340, 65, 14);
 		rightPanelCart.add(lblProduse);
 		
 		lblCantitate = new JLabel("Cantitate");
 		lblCantitate.setForeground(Color.LIGHT_GRAY);
 		lblCantitate.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblCantitate.setBounds(163, 173, 58, 14);
+		lblCantitate.setBounds(212, 340, 58, 14);
 		rightPanelCart.add(lblCantitate);
+		
+		button = new JButton("Update Product");
+		button.setFont(new Font("Tahoma", Font.BOLD, 13));
+		button.setBackground(Color.CYAN);
+		button.setBounds(84, 190, 144, 23);
+		rightPanelCart.add(button);
+		
+		pretFieldupdate = new JTextField();
+		pretFieldupdate.setBounds(142, 127, 86, 20);
+		rightPanelCart.add(pretFieldupdate);
+		pretFieldupdate.setColumns(10);
+		
+		cantitateFieldupdate = new JTextField();
+		cantitateFieldupdate.setBounds(142, 96, 101, 20);
+		rightPanelCart.add(cantitateFieldupdate);
+		cantitateFieldupdate.setColumns(10);
+		
+		denumireFieldupdate = new JTextField();
+		denumireFieldupdate.setBounds(142, 65, 128, 20);
+		rightPanelCart.add(denumireFieldupdate);
+		denumireFieldupdate.setColumns(10);
+		
+		JLabel lblPlafar = new JLabel("PLAFAR");
+		lblPlafar.setForeground(Color.CYAN);
+		lblPlafar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		lblPlafar.setBounds(105, 40, 90, 14);
+		rightPanelCart.add(lblPlafar);
+		
+		JLabel lblDenumire = new JLabel("Denumire");
+		lblDenumire.setForeground(Color.CYAN);
+		lblDenumire.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblDenumire.setBounds(39, 68, 76, 14);
+		rightPanelCart.add(lblDenumire);
+		
+		JLabel lblCantitate_1 = new JLabel("Cantitate");
+		lblCantitate_1.setForeground(Color.CYAN);
+		lblCantitate_1.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblCantitate_1.setBounds(39, 99, 76, 14);
+		rightPanelCart.add(lblCantitate_1);
+		
+		JLabel lblPret = new JLabel("Pret");
+		lblPret.setForeground(Color.CYAN);
+		lblPret.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblPret.setBounds(39, 130, 76, 14);
+		rightPanelCart.add(lblPret);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(27, 246, 230, 2);
+		rightPanelCart.add(separator);
+		
+		cantitateField = new JTextField();
+		cantitateField.setFont(new Font("Tahoma", Font.BOLD, 13));
+		cantitateField.setBounds(205, 365, 65, 34);
+		rightPanelCart.add(cantitateField);
+		cantitateField.setColumns(10);
 		
 		
 		String[]columnNames= {"Denumire produs","Cantitate disponibila","Pret "};
@@ -181,14 +237,29 @@ public class frontendApp {
 		
 		backGRDPanel.add(scrollPaneTable);
 
+		class linie{
+			private int row;
+			public linie()
+			{
+			
+			}
+			
+			public void setRow(int r)
+			{
+				this.row=r;
+			}
+		};
+		
+		linie row=new linie();
+		
 		table.addMouseListener(new java.awt.event.MouseAdapter() {
 			 public void mouseClicked(java.awt.event.MouseEvent evt) {
-			    int row= table.rowAtPoint(evt.getPoint());
+			    row.setRow((table.rowAtPoint(evt.getPoint())));
 			    int col= table.columnAtPoint(evt.getPoint());
 
-			    if (row >= 0 && col == 0) {
+			    if (row.row >= 0 && col == 0) {
 			    	DefaultListModel productModel=new DefaultListModel();
-					productModel.addElement(listaProduses[row][col]);
+					productModel.addElement(listaProduses[row.row][col]);
 			    	cartList.setModel(productModel);
 
 			    
@@ -200,18 +271,43 @@ public class frontendApp {
 		btnCumparare.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent arg0) {
-				int cantitate=(int) comboBoxCartPiece.getSelectedItem();
+				int cantitate=Integer.parseInt(cantitateField.getText());
 				
-				//int actualvalue=(int) listaProduses[row][1];
+				int actualvalue=(int) listaProduses[row.row][1];
 				
-				//if(actualvalue>cantitate) {
-				//listaProduses[row][1]=actualvalue-cantitate;
-				//}
+				if(actualvalue>=cantitate) {//se actualizeaza cantitatea de produse 
+					listaProduses[row.row][1]=actualvalue-cantitate;
+					tableModel.setValueAt(actualvalue-cantitate, row.row, 1);
+				}
+				else
+				{
+					
+					JOptionPane.showMessageDialog(null,"Nu avem cantitatea ceruta","Invalid Quantity",JOptionPane.ERROR_MESSAGE);
+			
+				}
 			}
 			
 		});
 		
-
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String denumire=denumireFieldupdate.getText();
+				int cantitate=Integer.parseInt(cantitateFieldupdate.getText());
+				float pret=Float.parseFloat(pretFieldupdate.getText());
+				
+				int row=table.getSelectedRow();
+				
+				listaProduses[row][0]=denumire;
+				listaProduses[row][1]=cantitate;
+				listaProduses[row][2]=pret;
+				
+				tableModel.setValueAt(denumire, row, 0);
+				tableModel.setValueAt(cantitate, row, 1);
+				tableModel.setValueAt(pret, row, 2);
+				
+			}
+		});
+		
 		
 	}
 }
