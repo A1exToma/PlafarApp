@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import frontendmyApp.frontendApp;
+import frontendmyApp.mainPlafarrrApp;
 
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -89,7 +89,7 @@ public class Login_S {
 					
 					frame.setVisible(false);
 					
-					frontendApp.main(null);
+					mainPlafarrrApp.main(null);
 				}
 				else
 				{

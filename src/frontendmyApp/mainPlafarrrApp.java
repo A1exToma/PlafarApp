@@ -23,28 +23,38 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class frontendApp {
+public class mainPlafarrrApp {
 
 	private JFrame frame;
+	
 	private JTable table;
+	
 	private JPanel backGRDPanel;
-	private JPanel topPanel;
 	private JPanel rightPanelCart;
+	
 	private JButton btnCumparare;
+	private JButton updateButton;
+	private JButton btnAdd;
+	
 	private JLabel lblProduse;
 	private JLabel lblCantitate;
-	private JButton button;
+
 	private JTextField pretFieldupdate;
 	private JTextField cantitateFieldupdate;
 	private JTextField denumireFieldupdate;
 	private JTextField cantitateField;
+	
+	private JList cartList;
+	
+	private int numberOfRows=43;
+	Object[][] listaProduses = new Object[numberOfRows][3];
 
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frontendApp window = new frontendApp();
+					mainPlafarrrApp window = new mainPlafarrrApp();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,11 +63,13 @@ public class frontendApp {
 		});
 	}
 
-	public frontendApp() {
-		initialize();
+	public mainPlafarrrApp() {
+		guiApp();
+		logics();
 	}
-
-	private void initialize() {
+	
+	void guiApp() {
+		
 		frame = new JFrame("Plafar");
 		
 		//              x  y  dim   
@@ -70,12 +82,6 @@ public class frontendApp {
 		backGRDPanel.setBounds(0, 0, 784, 561);
 		frame.getContentPane().add(backGRDPanel);
 		backGRDPanel.setLayout(null);
-		
-		topPanel = new JPanel();
-		topPanel.setBackground(Color.LIGHT_GRAY);
-		topPanel.setBounds(0, 0, 506, 66);
-		backGRDPanel.add(topPanel);
-		topPanel.setLayout(null);
 		
 		rightPanelCart = new JPanel();
 		rightPanelCart.setForeground(Color.WHITE);
@@ -91,7 +97,7 @@ public class frontendApp {
 		btnCumparare.setBounds(20, 447, 250, 23);
 		rightPanelCart.add(btnCumparare);
 		
-		JList cartList = new JList();
+		cartList = new JList();
 		cartList.setForeground(Color.BLACK);
 		cartList.setBackground(Color.LIGHT_GRAY);
 		cartList.setFont(new Font("Calibri", Font.BOLD, 18));
@@ -117,11 +123,11 @@ public class frontendApp {
 		lblCantitate.setBounds(212, 340, 58, 14);
 		rightPanelCart.add(lblCantitate);
 		
-		button = new JButton("Update Product");
-		button.setFont(new Font("Tahoma", Font.BOLD, 13));
-		button.setBackground(Color.CYAN);
-		button.setBounds(84, 190, 144, 23);
-		rightPanelCart.add(button);
+		updateButton = new JButton("Update");
+		updateButton.setFont(new Font("Tahoma", Font.BOLD, 13));
+		updateButton.setBackground(Color.CYAN);
+		updateButton.setBounds(20, 189, 101, 23);
+		rightPanelCart.add(updateButton);
 		
 		pretFieldupdate = new JTextField();
 		pretFieldupdate.setBounds(142, 127, 86, 20);
@@ -163,7 +169,7 @@ public class frontendApp {
 		rightPanelCart.add(lblPret);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(27, 246, 230, 2);
+		separator.setBounds(20, 246, 237, 2);
 		rightPanelCart.add(separator);
 		
 		cantitateField = new JTextField();
@@ -172,9 +178,17 @@ public class frontendApp {
 		rightPanelCart.add(cantitateField);
 		cantitateField.setColumns(10);
 		
+		btnAdd = new JButton("Add");
+		btnAdd.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnAdd.setBounds(155, 189, 101, 23);
+		rightPanelCart.add(btnAdd);
+		
+		
+	}
+	private void logics() {
+		
 		
 		String[]columnNames= {"Denumire produs","Cantitate disponibila","Pret "};
-		Object[][] listaProduses = new Object[43][3];
 		
 		try {//se citesc datele din fisierul plante
 			Scanner read= new Scanner (new File("D:\\github\\myPlafarApp\\src\\frontendmyApp\\plante.txt"));
@@ -233,7 +247,7 @@ public class frontendApp {
 		
 		scrollPaneTable.add(table);
 		scrollPaneTable.setViewportView(table);
-		scrollPaneTable.setBounds(0, 65, 506, 496);
+		scrollPaneTable.setBounds(0, 0, 506, 561);
 		
 		backGRDPanel.add(scrollPaneTable);
 
@@ -289,25 +303,49 @@ public class frontendApp {
 			
 		});
 		
-		button.addActionListener(new ActionListener() {
+		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				int row=table.getSelectedRow();
+				if(row>=0) {
+					String denumire;
+					if(denumireFieldupdate.getText()!=null)
+					{
+						denumire=denumireFieldupdate.getText();
+						listaProduses[row][0]=denumire;
+						tableModel.setValueAt(denumire, row, 0);
+					}
+					
+					int cantitate;
+					if(cantitateFieldupdate.getText()!=null)	
+					{
+						cantitate=Integer.parseInt(cantitateFieldupdate.getText());
+						listaProduses[row][1]=cantitate;
+						tableModel.setValueAt(cantitate, row, 1);
+					}
+					
+					float pret;
+					if(pretFieldupdate.getText()!=null) {
+						pret=Float.parseFloat(pretFieldupdate.getText());
+						listaProduses[row][2]=pret;
+						tableModel.setValueAt(pret, row, 2);
+					}
+				}			
+			}
+		});
+		
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
 				String denumire=denumireFieldupdate.getText();
 				int cantitate=Integer.parseInt(cantitateFieldupdate.getText());
 				float pret=Float.parseFloat(pretFieldupdate.getText());
 				
-				int row=table.getSelectedRow();
-				
-				listaProduses[row][0]=denumire;
-				listaProduses[row][1]=cantitate;
-				listaProduses[row][2]=pret;
-				
-				tableModel.setValueAt(denumire, row, 0);
-				tableModel.setValueAt(cantitate, row, 1);
-				tableModel.setValueAt(pret, row, 2);
+				tableModel.addRow(new Object[] {denumire,cantitate,pret});
 				
 			}
 		});
 		
-		
 	}
+
+
 }
