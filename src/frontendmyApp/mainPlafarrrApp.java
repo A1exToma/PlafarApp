@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import javax.swing.DefaultListModel;
@@ -27,28 +30,27 @@ public class mainPlafarrrApp {
 
 	private JFrame frame;
 	
-	private JTable table;
-	
-	private JPanel backGRDPanel;
 	private JPanel rightPanelCart;
-	
-	private JButton btnCumparare;
 	private JButton updateButton;
 	private JButton btnAdd;
 	
+	private JButton btnCumparare;
+	
 	private JLabel lblProduse;
 	private JLabel lblCantitate;
+	
 
 	private JTextField pretFieldupdate;
 	private JTextField cantitateFieldupdate;
 	private JTextField denumireFieldupdate;
+	
 	private JTextField cantitateField;
 	
-	private JList cartList;
+	private JList<Object> cartList;
 	
-	private int numberOfRows=43;
-	Object[][] listaProduses = new Object[numberOfRows][3];
-
+	private tableForm backGRDPanel;
+	
+	PrintWriter writer;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -65,11 +67,10 @@ public class mainPlafarrrApp {
 
 	public mainPlafarrrApp() {
 		guiApp();
-		logics();
+		logic();
 	}
-	
-	void guiApp() {
-		
+
+	private void guiApp() {
 		frame = new JFrame("Plafar");
 		
 		//              x  y  dim   
@@ -77,17 +78,17 @@ public class mainPlafarrrApp {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		backGRDPanel = new JPanel();
+		backGRDPanel = new tableForm();
 		backGRDPanel.setBackground(Color.CYAN);
-		backGRDPanel.setBounds(0, 0, 784, 561);
-		frame.getContentPane().add(backGRDPanel);
+		backGRDPanel.setBounds(0, 0, 506, 561);
 		backGRDPanel.setLayout(null);
+		frame.getContentPane().add(backGRDPanel);
 		
 		rightPanelCart = new JPanel();
 		rightPanelCart.setForeground(Color.WHITE);
 		rightPanelCart.setBackground(Color.DARK_GRAY);
 		rightPanelCart.setBounds(504, 0, 280, 561);
-		backGRDPanel.add(rightPanelCart);
+		frame.add(rightPanelCart);
 		rightPanelCart.setLayout(null);
 		
 		btnCumparare = new JButton("CUMPARARE");
@@ -97,7 +98,7 @@ public class mainPlafarrrApp {
 		btnCumparare.setBounds(20, 447, 250, 23);
 		rightPanelCart.add(btnCumparare);
 		
-		cartList = new JList();
+		cartList = new JList<Object>();
 		cartList.setForeground(Color.BLACK);
 		cartList.setBackground(Color.LIGHT_GRAY);
 		cartList.setFont(new Font("Calibri", Font.BOLD, 18));
@@ -183,115 +184,53 @@ public class mainPlafarrrApp {
 		btnAdd.setBounds(155, 189, 101, 23);
 		rightPanelCart.add(btnAdd);
 		
-		
 	}
-	private void logics() {
+	
+	private void logic() {
 		
-		
-		String[]columnNames= {"Denumire produs","Cantitate disponibila","Pret "};
-		
-		try {//se citesc datele din fisierul plante
-			Scanner read= new Scanner (new File("D:\\github\\myPlafarApp\\src\\frontendmyApp\\plante.txt"));
-			
-			String denumire,temp;
-			int cantitate;
-			float pret;
-			
-			int i=0,j=0;
-			
-			while(read.hasNext())
-			{
-				denumire=read.next();
-				
-				temp=read.next();
-				cantitate=Integer.parseInt(temp);
-				
-				temp=read.next();
-				pret=Float.parseFloat(temp);
-				
-				listaProduses[i][j++]=denumire;
-				listaProduses[i][j++]=new Integer(cantitate);
-				listaProduses[i][j]=new Float(pret);
-				i++;
-				j=0;
-				
-			}
-			read.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		
-		DefaultTableModel tableModel = new DefaultTableModel(listaProduses,columnNames) {//make cells nonEditable
 
-			private static final long serialVersionUID = 1L;
-
-			public boolean isCellEditable(int row, int column) {
-		       return false;
-		    }
-		};
-		
-		
-		JScrollPane scrollPaneTable=new JScrollPane();
-		table = new JTable(listaProduses,columnNames);
-		table.setRowHeight(35);
-		table.setShowHorizontalLines(false);
-		table.setShowGrid(false);
-		table.setFont(new Font("Arial Black", Font.PLAIN, 13));
-		table.setBorder(new EmptyBorder(0, 0, 0, 0));
-		table.getColumnModel().getColumn(0).setPreferredWidth(124);
-		table.getColumnModel().getColumn(1).setPreferredWidth(117);
-		table.getColumnModel().getColumn(2).setPreferredWidth(37);
-		table.setBackground(Color.CYAN);
-		table.setModel(tableModel);//nonEditable cells
-		
-		scrollPaneTable.add(table);
-		scrollPaneTable.setViewportView(table);
-		scrollPaneTable.setBounds(0, 0, 506, 561);
-		
-		backGRDPanel.add(scrollPaneTable);
-
-		class linie{
-			private int row;
-			public linie()
-			{
+		backGRDPanel.table.addMouseListener(new java.awt.event.MouseAdapter() {
 			
-			}
-			
-			public void setRow(int r)
-			{
-				this.row=r;
-			}
-		};
-		
-		linie row=new linie();
-		
-		table.addMouseListener(new java.awt.event.MouseAdapter() {
 			 public void mouseClicked(java.awt.event.MouseEvent evt) {
-			    row.setRow((table.rowAtPoint(evt.getPoint())));
-			    int col= table.columnAtPoint(evt.getPoint());
+				 
+			    int row=backGRDPanel.table.rowAtPoint(evt.getPoint());
+			    int col= backGRDPanel.table.columnAtPoint(evt.getPoint());
 
-			    if (row.row >= 0 && col == 0) {
-			    	DefaultListModel productModel=new DefaultListModel();
-					productModel.addElement(listaProduses[row.row][col]);
-			    	cartList.setModel(productModel);
-
-			    
+			    if (row >= 0 && col == 0) {
+			    	
+			    	DefaultListModel<Object> productModelList=new DefaultListModel<Object>();
+					productModelList.addElement(backGRDPanel.tableModel.getValueAt(row, col));
+			    	cartList.setModel(productModelList);
+			    	
 			    }
 			    
 			 }
 			});
 		
+		try {
+			writer = new PrintWriter("ProduseVandute.txt", "UTF-8");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
 		btnCumparare.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent arg0) {
-				int cantitate=Integer.parseInt(cantitateField.getText());
 				
-				int actualvalue=(int) listaProduses[row.row][1];
+				int row=backGRDPanel.table.getSelectedRow();
+				
+				int cantitate=Integer.parseInt(cantitateField.getText());
+				int actualvalue=(int) backGRDPanel.tableModel.getValueAt(row, 1);
 				
 				if(actualvalue>=cantitate) {//se actualizeaza cantitatea de produse 
-					listaProduses[row.row][1]=actualvalue-cantitate;
-					tableModel.setValueAt(actualvalue-cantitate, row.row, 1);
+					
+					backGRDPanel.tableModel.setValueAt(actualvalue-cantitate, row, 1);
+					writer.println(backGRDPanel.tableModel.getValueAt(row, 0)+"  " +cantitate);
+					cantitateField.setText(null);
 				}
 				else
 				{
@@ -305,47 +244,51 @@ public class mainPlafarrrApp {
 		
 		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int row=table.getSelectedRow();
+				
+				int row=backGRDPanel.table.getSelectedRow();
+				
 				if(row>=0) {
 					String denumire;
 					if(denumireFieldupdate.getText()!=null)
 					{
 						denumire=denumireFieldupdate.getText();
-						listaProduses[row][0]=denumire;
-						tableModel.setValueAt(denumire, row, 0);
+						backGRDPanel.tableModel.setValueAt(denumire, row, 0);
+						
 					}
 					
 					int cantitate;
-					if(cantitateFieldupdate.getText()!=null)	
-					{
+					if(cantitateFieldupdate.getText()!=null){
+						
 						cantitate=Integer.parseInt(cantitateFieldupdate.getText());
-						listaProduses[row][1]=cantitate;
-						tableModel.setValueAt(cantitate, row, 1);
+						backGRDPanel.tableModel.setValueAt(cantitate, row, 1);
+						
 					}
 					
 					float pret;
 					if(pretFieldupdate.getText()!=null) {
+						
 						pret=Float.parseFloat(pretFieldupdate.getText());
-						listaProduses[row][2]=pret;
-						tableModel.setValueAt(pret, row, 2);
+						backGRDPanel.tableModel.setValueAt(pret, row, 2);
+						
 					}
 				}			
 			}
 		});
 		
 		btnAdd.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent arg0) {
 				
 				String denumire=denumireFieldupdate.getText();
 				int cantitate=Integer.parseInt(cantitateFieldupdate.getText());
 				float pret=Float.parseFloat(pretFieldupdate.getText());
 				
-				tableModel.addRow(new Object[] {denumire,cantitate,pret});
+				backGRDPanel.tableModel.addRow(new Object[] {denumire,cantitate,pret});
 				
 			}
 		});
 		
+		
 	}
-
-
+	
 }
