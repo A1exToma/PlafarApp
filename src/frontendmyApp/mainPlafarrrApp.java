@@ -6,14 +6,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-import java.util.Scanner;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -22,12 +16,10 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
+
+import com.sun.glass.events.WindowEvent;
 
 public class mainPlafarrrApp {
 
@@ -53,6 +45,8 @@ public class mainPlafarrrApp {
 	
 	private tableForm backGRDPanel;
 	
+	protected BufferedWriter writer = null;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -69,6 +63,7 @@ public class mainPlafarrrApp {
 	public mainPlafarrrApp() {
 		guiApp();
 		logic();
+
 	}
 
 	private void guiApp() {
@@ -76,7 +71,25 @@ public class mainPlafarrrApp {
 		
 		//              x  y  dim   
 		frame.setBounds(300, 50, 800, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		        if (JOptionPane.showConfirmDialog(frame,"Are you sure you want to close this window?", "Close Window?", JOptionPane.YES_NO_OPTION,
+		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+		        	
+		        	try {
+						writer.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		        	
+		            System.exit(0);
+		        }
+		    }
+		
+		});
 		frame.getContentPane().setLayout(null);
 		
 		backGRDPanel = new tableForm();
@@ -189,6 +202,13 @@ public class mainPlafarrrApp {
 	
 	private void logic() {
 		
+		try {
+			writer = new BufferedWriter(new FileWriter("planteVandute.txt"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 
 		backGRDPanel.table.addMouseListener(new java.awt.event.MouseAdapter() {
 			
@@ -222,6 +242,16 @@ public class mainPlafarrrApp {
 				if(actualvalue>=cantitate) {//se actualizeaza cantitatea de produse 
 					
 					backGRDPanel.tableModel.setValueAt(actualvalue-cantitate, row, 1);
+					
+				    String fileContent = backGRDPanel.tableModel.getValueAt(row, 0)+" "+cantitate+"\n";
+					
+					try {
+						writer.write(fileContent);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				    
 					cantitateField.setText(null);
 				}
 				else
@@ -279,8 +309,7 @@ public class mainPlafarrrApp {
 				
 			}
 		});
-		
-		
+
 	}
 	
 }
