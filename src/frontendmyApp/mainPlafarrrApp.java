@@ -5,8 +5,11 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
@@ -49,8 +52,6 @@ public class mainPlafarrrApp {
 	private JList<Object> cartList;
 	
 	private tableForm backGRDPanel;
-	
-	PrintWriter writer;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -207,15 +208,7 @@ public class mainPlafarrrApp {
 			 }
 			});
 		
-		try {
-			writer = new PrintWriter("ProduseVandute.txt", "UTF-8");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	
 		btnCumparare.addActionListener(new ActionListener(){
 
@@ -229,7 +222,6 @@ public class mainPlafarrrApp {
 				if(actualvalue>=cantitate) {//se actualizeaza cantitatea de produse 
 					
 					backGRDPanel.tableModel.setValueAt(actualvalue-cantitate, row, 1);
-					writer.println(backGRDPanel.tableModel.getValueAt(row, 0)+"  " +cantitate);
 					cantitateField.setText(null);
 				}
 				else
