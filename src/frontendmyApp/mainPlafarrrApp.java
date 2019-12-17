@@ -102,7 +102,7 @@ public class mainPlafarrrApp {
 		rightPanelCart.setForeground(Color.WHITE);
 		rightPanelCart.setBackground(Color.DARK_GRAY);
 		rightPanelCart.setBounds(504, 0, 280, 561);
-		frame.add(rightPanelCart);
+		frame.getContentPane().add(rightPanelCart);
 		rightPanelCart.setLayout(null);
 		
 		btnCumparare = new JButton("CUMPARARE");
@@ -138,10 +138,10 @@ public class mainPlafarrrApp {
 		lblCantitate.setBounds(212, 340, 58, 14);
 		rightPanelCart.add(lblCantitate);
 		
-		updateButton = new JButton("Update");
+		updateButton = new JButton("Actualizeaza");
 		updateButton.setFont(new Font("Tahoma", Font.BOLD, 13));
 		updateButton.setBackground(Color.CYAN);
-		updateButton.setBounds(20, 189, 101, 23);
+		updateButton.setBounds(20, 189, 131, 23);
 		rightPanelCart.add(updateButton);
 		
 		pretFieldupdate = new JTextField();
@@ -193,9 +193,9 @@ public class mainPlafarrrApp {
 		rightPanelCart.add(cantitateField);
 		cantitateField.setColumns(10);
 		
-		btnAdd = new JButton("Add");
+		btnAdd = new JButton("Adauga");
 		btnAdd.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnAdd.setBounds(155, 189, 101, 23);
+		btnAdd.setBounds(169, 189, 101, 23);
 		rightPanelCart.add(btnAdd);
 		
 	}
