@@ -22,6 +22,8 @@ public class Login_S {
 	private JTextField usernameField;
 	private JPasswordField txtPassword;
 
+	private DBConnect DBCon =new DBConnect();
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -79,7 +81,7 @@ public class Login_S {
 				String user=usernameField.getText();
 				String pass=txtPassword.getText();
 				
-				if(user.contains("alextoma")&&pass.contains("12345"))
+				if(DBCon.checkDetalis(user, pass))
 				{
 					usernameField.setText(null);
 					txtPassword.setText(null);
